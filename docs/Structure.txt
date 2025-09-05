@@ -1,0 +1,46 @@
+project/
+├── core/                    # Framework core (reusable)
+│   ├── Application.php
+│   ├── Router.php
+│   ├── Controller.php
+│   ├── Model.php
+│   ├── View.php
+│   ├── Request.php
+│   ├── Response.php
+│   ├── Database.php
+│   ├── QueryBuilder.php
+│   ├── Validator.php
+│   ├── Middleware.php
+│   ├── Session.php
+│   └── helpers.php
+├── app/                     # Application code
+│   ├── Controllers/
+│   │   ├── HomeController.php
+│   │   └── UserController.php
+│   ├── Models/
+│   │   └── User.php
+│   ├── Middlewares/
+│   │   ├── AuthMiddleware.php
+│   │   ├── CsrfMiddleware.php
+│   │   └── RateLimitMiddleware.php
+│   └── config/
+│       ├── app.php
+│       └── database.php
+├── views/
+│   ├── layouts/
+│   │   └── main.php
+│   ├── home/
+│   │   └── index.php
+│   └── users/
+│       ├── index.php
+│       └── show.php
+├── public/
+│   ├── index.php           # Entry point
+│   └── .htaccess
+├── routes/
+│   └── web.php
+├── storage/
+│   ├── cache/
+│   └── logs/
+├── composer.json
+└── .env

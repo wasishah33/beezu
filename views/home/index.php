@@ -1,0 +1,3 @@
+<h1><?= e($title ?? 'Home') ?></h1>
+<p><?= e($message ?? 'Welcome!') ?></p>
+<?php

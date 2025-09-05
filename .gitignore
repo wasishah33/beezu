@@ -1,0 +1,131 @@
+# Beezu Framework .gitignore
+
+# Dependencies
+/vendor/
+/node_modules/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs
+/storage/logs/*
+!/storage/logs/.gitkeep
+*.log
+
+# Cache
+/storage/cache/*
+!/storage/cache/.gitkeep
+
+# Session files
+/storage/sessions/*
+!/storage/sessions/.gitkeep
+
+# Framework files
+/bootstrap/cache/*
+!/bootstrap/cache/.gitkeep
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Composer
+composer.phar
+composer.lock
+
+# PHPUnit
+/phpunit.xml
+/phpunit.xml.dist
+/.phpunit.result.cache
+
+# Coverage reports
+/coverage/
+/htmlcov/
+/.nyc_output/
+
+# Build artifacts
+/build/
+/dist/
+
+# Database
+*.sqlite
+*.db
+
+# Uploads (if you add file upload functionality)
+/public/uploads/*
+!/public/uploads/.gitkeep
+
+# Assets (if you want to ignore compiled assets)
+/public/assets/front/css/bootstrap.min.css
+/public/assets/front/js/bootstrap.bundle.min.js
+/public/assets/front/js/jquery.min.js
+/public/assets/admin/css/bootstrap.min.css
+/public/assets/admin/css/adminlte.min.css
+/public/assets/admin/js/bootstrap.bundle.min.js
+/public/assets/admin/js/jquery.min.js
+/public/assets/admin/js/adminlte.min.js
+/public/assets/admin/js/fontawesome.min.js
+
+# Keep custom CSS/JS files
+!/public/assets/front/css/style.css
+!/public/assets/front/js/script.js
+!/public/assets/admin/css/style.css
+!/public/assets/admin/js/script.js
+
+# Laragon specific (if using Laragon)
+/laragon/
+
+# XAMPP specific (if using XAMPP)
+/xampp/
+
+# WAMP specific (if using WAMP)
+/wamp/
+
+# MAMP specific (if using MAMP)
+/mamp/
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# SSL certificates
+*.pem
+*.key
+*.crt
+
+# Backup files
+*.backup
+*.bak
+*.old
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+
+# Documentation build
+/docs/build/
+
+# Test results
+/tests/results/
