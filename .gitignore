@@ -3,6 +3,7 @@
 # Dependencies
 /vendor/
 /node_modules/
+/docs/
 
 # Environment files
 .env
