@@ -16,12 +16,7 @@ class AdminController extends Controller
         View::setLayout('admin');
         
         $data = [
-            'title' => 'Dashboard',
-            'stats' => [
-                'total_users' => 150,
-                'active_sessions' => 23,
-                'system_uptime' => '99.9%'
-            ]
+            'title' => 'Dashboard'
         ];
         
         $this->render('admin/dashboard/index', $data);
@@ -32,8 +27,6 @@ class AdminController extends Controller
      */
     public function users(): void
     {
-        View::setLayout('admin');
-        
         $data = [
             'title' => 'User Management',
             'users' => [
@@ -51,8 +44,6 @@ class AdminController extends Controller
      */
     public function settings(): void
     {
-        View::setLayout('admin');
-        
         $data = [
             'title' => 'System Settings',
             'settings' => [

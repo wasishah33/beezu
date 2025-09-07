@@ -44,17 +44,27 @@ class Request
      */
     public function all(): array
     {
-        // Prefer POST overriding GET keys when both exist
-        return array_merge($_GET ?? [], $_POST ?? []);
+        // Get sanitized GET and POST arrays
+        $get  = filter_input_array(INPUT_GET, FILTER_SANITIZE_SPECIAL_CHARS) ?? [];
+        $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS) ?? [];
+    
+        // POST overrides GET if same key exists
+        return array_merge($get, $post);
     }
 
     /**
      * Get a single input value.
      */
-    public function input(string $key, $default = null)
+    public function input(string $key, $default = null, int $filter = FILTER_SANITIZE_SPECIAL_CHARS)
     {
-        $data = $this->all();
-        return $data[$key] ?? $default;
+        // Prefer POST value over GET
+        $value = filter_input(INPUT_POST, $key, $filter);
+    
+        if ($value === null || $value === false) {
+            $value = filter_input(INPUT_GET, $key, $filter);
+        }
+    
+        return $value !== null && $value !== false ? $value : $default;
     }
 
     /**

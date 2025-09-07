@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use Core\Controller;
 
-class HomeController extends Controller
+class FrontController extends Controller
 {
     /**
      * Home page

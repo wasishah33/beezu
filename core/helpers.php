@@ -20,6 +20,15 @@ function config(string $key, $default = null)
 }
 
 /**
+ * Include view
+ */
+function partial(string $view, array $data = [])
+{
+
+    return Application::$app->view->partial($view, $data);
+}
+
+/**
  * Generate URL
  */
 function url(string $path = ''): string

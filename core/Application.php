@@ -5,21 +5,25 @@ namespace Core;
 class Application
 {
     private static ?Application $instance = null;
+    public static Application $app;
     private Router $router;
     private Request $request;
     private Response $response;
     private Database $database;
+    public View $view;
     private array $config = [];
     private array $middlewares = [];
-    
+
     public function __construct()
     {
         self::$instance = $this;
+        self::$app = $this;
         $this->request = new Request();
         $this->response = new Response();
         $this->router = new Router($this->request, $this->response);
+        $this->view = new View();
     }
-    
+
     /**
      * Get application instance
      */
@@ -30,7 +34,7 @@ class Application
         }
         return self::$instance;
     }
-    
+
     /**
      * Load configuration files
      */
@@ -42,7 +46,7 @@ class Application
             $this->config[$key] = require $file;
         }
     }
-    
+
     /**
      * Get configuration value
      */
@@ -50,17 +54,17 @@ class Application
     {
         $keys = explode('.', $key);
         $value = $this->config;
-        
+
         foreach ($keys as $k) {
             if (!isset($value[$k])) {
                 return $default;
             }
             $value = $value[$k];
         }
-        
+
         return $value;
     }
-    
+
     /**
      * Register global middlewares
      */
@@ -68,11 +72,11 @@ class Application
     {
         // Register CSRF middleware
         $this->addMiddleware(new \App\Middlewares\CsrfMiddleware());
-        
+
         // Register rate limiting middleware
         $this->addMiddleware(new \App\Middlewares\RateLimitMiddleware());
     }
-    
+
     /**
      * Add middleware
      */
@@ -80,7 +84,7 @@ class Application
     {
         $this->middlewares[] = $middleware;
     }
-    
+
     /**
      * Run the application
      */
@@ -94,14 +98,14 @@ class Application
                     return;
                 }
             }
-            
+
             // Dispatch route
             $this->router->dispatch();
         } catch (\Exception $e) {
             $this->handleException($e);
         }
     }
-    
+
     /**
      * Handle exceptions
      */
@@ -118,12 +122,21 @@ class Application
             echo "Internal Server Error";
         }
     }
-    
+
     // Getters
-    public function getRouter(): Router { return $this->router; }
-    public function getRequest(): Request { return $this->request; }
-    public function getResponse(): Response { return $this->response; }
-    
+    public function getRouter(): Router
+    {
+        return $this->router;
+    }
+    public function getRequest(): Request
+    {
+        return $this->request;
+    }
+    public function getResponse(): Response
+    {
+        return $this->response;
+    }
+
     /**
      * Get database connection
      */
