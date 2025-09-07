@@ -8,5 +8,7 @@
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="<?= url('/assets/admin/css/adminlte.min.css') ?>">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
+    <!-- Custom style -->
+    <link rel="stylesheet" href="<?= asset('admin/css/custom.css') ?>">
 </head>

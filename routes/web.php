@@ -5,8 +5,10 @@ use Core\Application;
 // Get the router from the application container
 $router = app()->getRouter();
 
+////////////////////  FRONT ROUTES //////////////////////////
 // Home routes
-$router->get('/', 'HomeController@index');
+$router->middleware([\App\Middlewares\AuthMiddleware::class])
+->get('/', 'HomeController@index');
 
 // API examples
 $router->get('/api/ping', 'HomeController@api');
@@ -15,12 +17,37 @@ $router->get('/api/ping', 'HomeController@api');
 $router->get('/users', 'UserController@index');
 $router->get('/users/{id}', 'UserController@show');
 
+
+////////////////////  ADMIN ROUTES //////////////////////////
+
 // Admin routes (auto-detected for admin layout)
 $router->get('/admin', 'AdminController@index');
 $router->get('/admin/users', 'AdminController@users');
 $router->get('/admin/settings', 'AdminController@settings');
 $router->get('/admin/api/stats', 'AdminController@apiStats');
 
+// Authentication (admin)
+$router->get('/admin/login', 'AdminController@showLogin');
+$router
+    ->middleware([\App\Middlewares\CsrfMiddleware::class, \App\Middlewares\RateLimitMiddleware::class])
+    ->post('/admin/login', 'AdminController@login');
+
+$router
+    ->middleware([\App\Middlewares\AuthMiddleware::class])
+    ->get('/admin/profile', 'AdminController@profile');
+
+$router
+    ->middleware([\App\Middlewares\AuthMiddleware::class, \App\Middlewares\CsrfMiddleware::class])
+    ->post('/admin/profile', 'AdminController@updateUser');
+
+$router
+    ->middleware([\App\Middlewares\AuthMiddleware::class, \App\Middlewares\CsrfMiddleware::class])
+    ->post('/admin/profile/password', 'AdminController@changePassword');
+
+$router->get('/admin/logout', 'AdminController@logout');
+
+
+//////////////////// EXAMPLE USAGE //////////////////////////
 // Create user (protected by CSRF + RateLimit)
 $router
     ->middleware([

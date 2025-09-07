@@ -19,7 +19,7 @@ class AuthMiddleware extends Middleware
             if ($request->isJson() || $request->isAjax()) {
                 $response->json(['error' => 'Unauthorized'], 401);
             } else {
-                $response->redirect('/login');
+                $response->redirect(url('/admin/login'));
             }
             return false;
         }

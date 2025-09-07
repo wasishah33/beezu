@@ -37,6 +37,7 @@ function url(string $path = ''): string
     return rtrim($baseUrl, '/') . '/' . ltrim($path, '/');
 }
 
+
 /**
  * Generate asset URL
  */

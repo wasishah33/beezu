@@ -6,7 +6,7 @@ use Core\Model;
 
 class User extends Model
 {
-    protected static string $table = 'users';
+    protected static ?string $table = 'users';
     
     /**
      * Find user by email
@@ -21,7 +21,7 @@ class User extends Model
      */
     public function verifyPassword(string $password): bool
     {
-        return password_verify($password, $this->password);
+        return password_verify($password, $this->password_hash);
     }
     
     /**
@@ -29,6 +29,6 @@ class User extends Model
      */
     public function setPasswordAttribute(string $password): void
     {
-        $this->attributes['password'] = password_hash($password, PASSWORD_DEFAULT);
+        $this->attributes['password_hash'] = password_hash($password, PASSWORD_DEFAULT);
     }
 }
