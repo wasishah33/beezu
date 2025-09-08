@@ -46,6 +46,7 @@ $router
 
 $router->get('/admin/logout', 'AdminController@logout');
 
+////////////////////  BLOG ROUTES //////////////////////////
 // Blog routes (admin)
 $router->get('/admin/blog', 'BlogController@index');
 
