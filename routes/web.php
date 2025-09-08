@@ -46,6 +46,33 @@ $router
 
 $router->get('/admin/logout', 'AdminController@logout');
 
+// Blog routes (admin)
+$router->get('/admin/blog', 'BlogController@index');
+
+// Posts
+$router->get('/admin/blog/posts', 'BlogController@posts');
+$router->get('/admin/blog/posts/create', 'BlogController@postForm');
+$router->post('/admin/blog/posts', 'BlogController@savePost');
+$router->get('/admin/blog/posts/{id}/edit', 'BlogController@postForm');
+$router->post('/admin/blog/posts/{id}', 'BlogController@savePost');
+$router->get('/admin/blog/posts/{id}/delete', 'BlogController@deletePost');
+
+// Categories
+$router->get('/admin/blog/categories', 'BlogController@categories');
+$router->get('/admin/blog/categories/create', 'BlogController@categoryForm');
+$router->post('/admin/blog/categories', 'BlogController@saveCategory');
+$router->get('/admin/blog/categories/{id}/edit', 'BlogController@categoryForm');
+$router->post('/admin/blog/categories/{id}', 'BlogController@saveCategory');
+$router->get('/admin/blog/categories/{id}/delete', 'BlogController@deleteCategory');
+
+// Pages
+$router->get('/admin/blog/pages', 'BlogController@pages');
+$router->get('/admin/blog/pages/create', 'BlogController@pageForm');
+$router->post('/admin/blog/pages', 'BlogController@savePage');
+$router->get('/admin/blog/pages/{id}/edit', 'BlogController@pageForm');
+$router->post('/admin/blog/pages/{id}', 'BlogController@savePage');
+$router->get('/admin/blog/pages/{id}/delete', 'BlogController@deletePage');
+
 
 //////////////////// EXAMPLE USAGE //////////////////////////
 // Create user (protected by CSRF + RateLimit)

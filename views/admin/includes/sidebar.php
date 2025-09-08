@@ -23,10 +23,16 @@
               </p>
             </a>
           </li>
-          <li class="nav-header">Blog</li>
+          <li class="nav-header">Blog Management</li>
+          <li class="nav-item">
+            <a href="<?= url('/admin/blog') ?>" class="nav-link">
+              <i class="nav-icon fas fa-chart-bar"></i>
+              <p>Blog Dashboard</p>
+            </a>
+          </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-book"></i>
+              <i class="nav-icon fas fa-newspaper"></i>
               <p>
                 Posts
                 <i class="fas fa-angle-left right"></i>
@@ -34,33 +40,61 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/examples/invoice.html" class="nav-link">
+                <a href="<?= url('/admin/blog/posts') ?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Invoice</p>
+                  <p>All Posts</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/examples/project-detail.html" class="nav-link">
+                <a href="<?= url('/admin/blog/posts/create') ?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Project Detail</p>
+                  <p>Create Post</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-tags"></i>
+              <p>
+                Categories
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="<?= url('/admin/blog/categories') ?>" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>All Categories</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/examples/contacts.html" class="nav-link">
+                <a href="<?= url('/admin/blog/categories/create') ?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Contacts</p>
+                  <p>Create Category</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-file-alt"></i>
+              <p>
+                Pages
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="<?= url('/admin/blog/pages') ?>" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>All Pages</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/examples/faq.html" class="nav-link">
+                <a href="<?= url('/admin/blog/pages/create') ?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>FAQ</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/contact-us.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Contact us</p>
+                  <p>Create Page</p>
                 </a>
               </li>
             </ul>
