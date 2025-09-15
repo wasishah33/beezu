@@ -10,6 +10,7 @@ class Application
     private Request $request;
     private Response $response;
     private Database $database;
+    private CrudGenerator $crud;
     public View $view;
     private array $config = [];
     private array $middlewares = [];
@@ -22,6 +23,7 @@ class Application
         $this->response = new Response();
         $this->router = new Router($this->request, $this->response);
         $this->view = new View();
+        $this->crud = new CrudGenerator();
     }
 
     /**
@@ -135,6 +137,10 @@ class Application
     public function getResponse(): Response
     {
         return $this->response;
+    }
+    public function getCrud(): CrudGenerator
+    {
+        return $this->crud;
     }
 
     /**

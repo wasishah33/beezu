@@ -6,6 +6,7 @@ abstract class Controller
 {
     protected Request $request;
     protected Response $response;
+    protected CrudGenerator $crud;
     protected View $view;
 
     public function __construct()
@@ -13,6 +14,7 @@ abstract class Controller
         $app = Application::getInstance();
         $this->request = $app->getRequest();
         $this->response = $app->getResponse();
+        $this->crud = $app->getCrud();
         $this->view = $app->view;
     }
 

@@ -6,8 +6,9 @@ use App\Middlewares\AuthMiddleware;
 // Get the router from the application container
 $router = app()->getRouter();
 
+////////////////////  CRUD GENERATOR //////////////////////////
 
-
+$router->get('/admin/generate', 'CrudController@index');
 
 ////////////////////  FRONT ROUTES //////////////////////////
 // Home routes
@@ -23,10 +24,10 @@ $router->get('/users/{id}', 'UserController@show');
 
 
 
- ////////////////////  ADMIN ROUTES //////////////////////////
+////////////////////  ADMIN ROUTES //////////////////////////
 $router->get('/admin/login', 'AdminController@showLogin');
 $router->middleware([\App\Middlewares\CsrfMiddleware::class])
-        ->post('/admin/login', 'AdminController@login');
+    ->post('/admin/login', 'AdminController@login');
 // Blog routes (admin)
 $router->middleware([AuthMiddleware::class])->prefix('/admin')->group(function ($router) {
     // Admin routes (auto-detected for admin layout)
@@ -37,7 +38,7 @@ $router->middleware([AuthMiddleware::class])->prefix('/admin')->group(function (
     $router->get('/profile', 'AdminController@profile');
     $router->post('/profile', 'AdminController@updateUser');
     $router->post('/profile/password', 'AdminController@changePassword');
-    
+
     ////////////////////  BLOG ROUTES //////////////////////////
     $router->get('/blog', 'BlogController@index');
     // Posts
@@ -119,5 +120,3 @@ $router
     ->post('/contact/submit', function () {
         echo 'Form submitted successfully';
     });
-
-
