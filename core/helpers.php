@@ -142,41 +142,101 @@ function auth_id(): ?int
 }
 
 /**
- * Handle file upload
+ * Handle file upload with optional image resizing and thumbnail creation
  *
- * @param string $fieldName The name of the file input field
- * @param string $folder The folder to upload the file to (relative to public/)
- * @param array $allowedExtensions List of allowed file extensions
- * @return string|null The relative path to the uploaded file or null if no file was uploaded
- * @throws \Exception If the upload fails or the file type is not allowed
+ * @param string $fileKey The key in the $_FILES array
+ * @param string $uploadDir The directory to upload files to
+ * @param int|null $desiredWidth The desired width to resize the image to (optional)
+ * @param int $thumbnailWidth The width of the thumbnail to create (default 200px)
+ * @return string|null The path to the uploaded file or null if no file was uploaded
+ * @throws Exception If the upload fails
  */
-function upload_file(string $fieldName, string $folder = 'uploads', array $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp']): ?string
+function uploadFile($fileKey, $uploadDir = 'public/uploads', $desiredWidth = null, $thumbnailWidth = 200): ?string
 {
-    if (!isset($_FILES[$fieldName]) || $_FILES[$fieldName]['error'] !== UPLOAD_ERR_OK) {
-        return null; // no file uploaded
+    if (!isset($_FILES[$fileKey]) || $_FILES[$fileKey]['error'] !== UPLOAD_ERR_OK) {
+        return null; // No file uploaded or error
     }
 
-    $uploadDir = __DIR__ . "/../public/{$folder}/";
-    $relativePath = "/{$folder}/";
+    $file = $_FILES[$fileKey];
+    $filename = time() . '_' . preg_replace('/\s+/', '_', basename($file['name']));
+    $targetPath = rtrim($uploadDir, '/') . '/' . $filename;
 
+    // Create upload folder if not exists
     if (!is_dir($uploadDir)) {
         mkdir($uploadDir, 0777, true);
     }
 
-    $fileTmpPath = $_FILES[$fieldName]['tmp_name'];
-    $fileName = basename($_FILES[$fieldName]['name']);
-    $extension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-
-    if (!in_array($extension, $allowedExtensions)) {
-        throw new \Exception("Invalid file type. Allowed: " . implode(', ', $allowedExtensions));
+    // Move uploaded file
+    if (!move_uploaded_file($file['tmp_name'], $targetPath)) {
+        throw new Exception("Failed to upload file.");
     }
 
-    $newFileName = uniqid(pathinfo($fileName, PATHINFO_FILENAME) . '_', true) . '.' . $extension;
-    $destination = $uploadDir . $newFileName;
+    // If image, process resizing and thumbnail
+    $fileType = mime_content_type($targetPath);
+    if (strpos($fileType, 'image') !== false) {
+        [$origWidth, $origHeight] = getimagesize($targetPath);
 
-    if (move_uploaded_file($fileTmpPath, $destination)) {
-        return $relativePath . $newFileName;
+        // Crop/resize to desired width if provided
+        if ($desiredWidth && $origWidth > $desiredWidth) {
+            $ratio = $origHeight / $origWidth;
+            $newHeight = intval($desiredWidth * $ratio);
+
+            $resized = imagecreatetruecolor($desiredWidth, $newHeight);
+
+            switch ($fileType) {
+                case 'image/jpeg':
+                    $source = imagecreatefromjpeg($targetPath);
+                    break;
+                case 'image/png':
+                    $source = imagecreatefrompng($targetPath);
+                    break;
+                case 'image/gif':
+                    $source = imagecreatefromgif($targetPath);
+                    break;
+                default:
+                    $source = null;
+            }
+
+            if ($source) {
+                imagecopyresampled($resized, $source, 0, 0, 0, 0, $desiredWidth, $newHeight, $origWidth, $origHeight);
+                imagejpeg($resized, $targetPath, 90);
+                imagedestroy($resized);
+                imagedestroy($source);
+            }
+        }
+
+        // Create thumbnail
+        $thumbDir = rtrim($uploadDir, '/') . '/thumbnails';
+        if (!is_dir($thumbDir)) {
+            mkdir($thumbDir, 0777, true);
+        }
+
+        $thumbPath = $thumbDir . '/' . $filename;
+        $ratio = $origHeight / $origWidth;
+        $thumbHeight = intval($thumbnailWidth * $ratio);
+
+        $thumb = imagecreatetruecolor($thumbnailWidth, $thumbHeight);
+        switch ($fileType) {
+            case 'image/jpeg':
+                $source = imagecreatefromjpeg($targetPath);
+                break;
+            case 'image/png':
+                $source = imagecreatefrompng($targetPath);
+                break;
+            case 'image/gif':
+                $source = imagecreatefromgif($targetPath);
+                break;
+            default:
+                $source = null;
+        }
+
+        if ($source) {
+            imagecopyresampled($thumb, $source, 0, 0, 0, 0, $thumbnailWidth, $thumbHeight, $origWidth, $origHeight);
+            imagejpeg($thumb, $thumbPath, 85);
+            imagedestroy($thumb);
+            imagedestroy($source);
+        }
     }
 
-    throw new \Exception("Failed to upload file.");
+    return str_replace('public/', '', $targetPath); // store relative path
 }
