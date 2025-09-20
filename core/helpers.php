@@ -189,6 +189,8 @@ function uploadFile($fileKey, $uploadDir = 'public/uploads', $desiredWidth = nul
                     break;
                 case 'image/png':
                     $source = imagecreatefrompng($targetPath);
+                    imagealphablending($resized, false);
+                    imagesavealpha($resized, true);
                     break;
                 case 'image/gif':
                     $source = imagecreatefromgif($targetPath);
@@ -202,6 +204,10 @@ function uploadFile($fileKey, $uploadDir = 'public/uploads', $desiredWidth = nul
                 imagejpeg($resized, $targetPath, 90);
                 imagedestroy($resized);
                 imagedestroy($source);
+
+                // update dimensions after resize
+                $origWidth = $desiredWidth;
+                $origHeight = $newHeight;
             }
         }
 
@@ -216,12 +222,15 @@ function uploadFile($fileKey, $uploadDir = 'public/uploads', $desiredWidth = nul
         $thumbHeight = intval($thumbnailWidth * $ratio);
 
         $thumb = imagecreatetruecolor($thumbnailWidth, $thumbHeight);
+
         switch ($fileType) {
             case 'image/jpeg':
                 $source = imagecreatefromjpeg($targetPath);
                 break;
             case 'image/png':
                 $source = imagecreatefrompng($targetPath);
+                imagealphablending($thumb, false);
+                imagesavealpha($thumb, true);
                 break;
             case 'image/gif':
                 $source = imagecreatefromgif($targetPath);
@@ -237,6 +246,5 @@ function uploadFile($fileKey, $uploadDir = 'public/uploads', $desiredWidth = nul
             imagedestroy($source);
         }
     }
-
     return str_replace('public/', '', $targetPath); // store relative path
 }
