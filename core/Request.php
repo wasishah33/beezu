@@ -47,7 +47,7 @@ class Request
         // Get sanitized GET and POST arrays
         $get  = filter_input_array(INPUT_GET, FILTER_SANITIZE_SPECIAL_CHARS) ?? [];
         $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS) ?? [];
-    
+
         // POST overrides GET if same key exists
         return array_merge($get, $post);
     }
@@ -57,14 +57,18 @@ class Request
      */
     public function input(string $key, $default = null, int $filter = FILTER_SANITIZE_SPECIAL_CHARS)
     {
-        // Prefer POST value over GET
-        $value = filter_input(INPUT_POST, $key, $filter);
-    
-        if ($value === null || $value === false) {
-            $value = filter_input(INPUT_GET, $key, $filter);
+        // Prefer POST over GET
+        $source = $_POST[$key] ?? $_GET[$key] ?? null;
+
+        if ($source === null) {
+            return $default;
         }
-    
-        return $value !== null && $value !== false ? $value : $default;
+
+        if (is_array($source)) {
+            return filter_var_array($source, $filter) ?: $default;
+        }
+
+        return filter_var($source, $filter) ?: $default;
     }
 
     /**
@@ -105,5 +109,3 @@ class Request
         return strtolower((string) $this->header('X-Requested-With', '')) === 'xmlhttprequest';
     }
 }
-
-
