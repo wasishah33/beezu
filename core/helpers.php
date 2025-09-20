@@ -246,7 +246,7 @@ function uploadFile($fileKey, $uploadDir = 'public/uploads', $desiredWidth = nul
             imagedestroy($source);
         }
     }
-    return str_replace('public/', '', $targetPath); // store relative path
+    return $filename; // store relative path
 }
 
 function deleteFile(string $filePath, string $uploadDir = 'public/uploads'): bool
