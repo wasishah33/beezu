@@ -248,3 +248,30 @@ function uploadFile($fileKey, $uploadDir = 'public/uploads', $desiredWidth = nul
     }
     return str_replace('public/', '', $targetPath); // store relative path
 }
+
+function deleteFile(string $filePath, string $uploadDir = 'public/uploads'): bool
+{
+    if (!$filePath) {
+        return false;
+    }
+
+    // Rebuild full path to original file
+    $fullPath = rtrim($uploadDir, '/') . '/' . basename($filePath);
+
+    $deleted = false;
+
+    // Delete original file
+    if (file_exists($fullPath)) {
+        unlink($fullPath);
+        $deleted = true;
+    }
+
+    // Delete thumbnail
+    $thumbPath = rtrim($uploadDir, '/') . '/thumbnails/' . basename($filePath);
+    if (file_exists($thumbPath)) {
+        unlink($thumbPath);
+        $deleted = true;
+    }
+
+    return $deleted;
+}
