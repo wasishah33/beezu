@@ -256,7 +256,7 @@ function deleteFile(string $filePath, string $uploadDir = 'public/uploads'): boo
     }
 
     // Rebuild full path to original file
-    $fullPath = __DIR__ . '/../../' . rtrim($uploadDir, '/') . '/' . basename($filePath);
+    $fullPath = __DIR__ . '/../' . rtrim($uploadDir, '/') . '/' . basename($filePath);
 
     $deleted = false;
 
@@ -267,7 +267,7 @@ function deleteFile(string $filePath, string $uploadDir = 'public/uploads'): boo
     }
 
     // Delete thumbnail
-    $thumbPath = __DIR__ . '/../../' . rtrim($uploadDir, '/') . '/thumbnails/' . basename($filePath);
+    $thumbPath = __DIR__ . '/../' . rtrim($uploadDir, '/') . '/thumbnails/' . basename($filePath);
     if (file_exists($thumbPath)) {
         unlink($thumbPath);
         $deleted = true;
